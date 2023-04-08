@@ -1,7 +1,7 @@
 import os
 import openai
 
-openai.api_key = "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"
+openai.api_key_path = "./openai_api_key"
 
 CONTEXTUAL_PROMPT = """
 You are an expert in non-violent communication.
