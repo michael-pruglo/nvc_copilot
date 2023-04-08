@@ -46,15 +46,19 @@ class MyGUI:
                                 font=("Arial", 19), text="make suggestions")
         self.refine_button = tk.Button(self.root, command=self.refine_suggestions,
                                 fg=FG_COLOR, bg="#255",
-                                font=("Arial", 19), text="refine suggestion")
+                                font=("Arial", 19), text="refine selection")
+        self.terse_button = tk.Button(self.root, command=self.make_terse,
+                                fg=FG_COLOR, bg="#552",
+                                font=("Arial", 19), text="less words")
         self.inp_text.place(relwidth=0.5, relheight=1-self.BTN_H)
         self.outp_text.place(relwidth=0.5, relheight=1-self.BTN_H, relx=0.5)
         self.get_button.place(relwidth=0.5, relheight=self.BTN_H, rely=1-self.BTN_H)
-        self.refine_button.place(relwidth=0.5, relheight=self.BTN_H, relx=0.5, rely=1-self.BTN_H)
+        self.refine_button.place(relwidth=0.25, relheight=self.BTN_H, relx=0.5, rely=1-self.BTN_H)
+        self.terse_button.place(relwidth=0.25, relheight=self.BTN_H, relx=0.75, rely=1-self.BTN_H)
 
     def show_suggestions(self):
         usr_input = self.inp_text.get("1.0", "end-1c").strip()
-        if (not usr_input or usr_input == PLACEHOLDER):
+        if not usr_input or usr_input == PLACEHOLDER:
             return
         print(f"request for '{usr_input}'")
         response = self.generator.get_message_suggestion(usr_input)
@@ -71,7 +75,13 @@ class MyGUI:
         alternative = self.generator.reword_part(selected_part)
         self.outp_text.insert("end-1c", "\n\nalternative:\n"+alternative)
 
-    
+    def make_terse(self):
+        if len(self.outp_text.get("1.0", "end-1c")) == 0:
+            print("sorry, output empty")
+            return
+        alternative = self.generator.make_terse()
+        self.outp_text.delete("1.0", "end-1c")
+        self.outp_text.insert("1.0", alternative)
 
     def run(self):
         self.root.mainloop()

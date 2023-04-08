@@ -13,8 +13,8 @@ VIOLENT_EXAMPLES = [
     "You disappointed me by not coming over last week - I had to rewatch the same movie again",
 ]
 
-def refine_prompt(part):
-    return f"Reword the part of the message '{part}' please."
+def prompt_refine(part): return f"Reword the part of the message '{part}' please"
+def prompt_make_terse(): return f"Make it more concise - use about 5% fewer words"
 
 
 class Generator:
@@ -33,7 +33,12 @@ class Generator:
     def reword_part(self, part:str) -> str:
         if os.getenv("DUMMY"):
             return f"Dummy reword for '{part}'"
-        return self._ask_gpt(refine_prompt(part))
+        return self._ask_gpt(prompt_refine(part))
+
+    def make_terse(self) -> str:
+        if os.getenv("DUMMY"):
+            return f"Dummy terser"
+        return self._ask_gpt(prompt_make_terse())
 
     def _ask_gpt(self, prompt:str) -> str:
         self.chat_hist.append({"role": "user", "content": prompt})
