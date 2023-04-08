@@ -41,24 +41,37 @@ class MyGUI:
                                 font=("Arial", 14, "bold"),
                                 insertbackground="#ddd", insertwidth=4)
         add_placeholder(self.inp_text)
-        self.outp_label = tk.Label(self.root, fg=FG_COLOR, bg="#222", anchor="nw",
-                                   font=("Arial", 14, "bold"),
-                                   justify="left", wraplength=450)
-        self.button = tk.Button(self.root, command=self.show_suggestions,
+        self.outp_text = tk.Text(self.root, fg=FG_COLOR, bg="#222",
+                                   font=("Arial", 14, "bold"))
+        self.get_button = tk.Button(self.root, command=self.show_suggestions,
                                 fg=FG_COLOR, bg="#252",
                                 font=("Arial", 19), text="make suggestions")
-
+        self.refine_button = tk.Button(self.root, command=self.refine_suggestions,
+                                fg=FG_COLOR, bg="#255",
+                                font=("Arial", 19), text="refine suggestion")
         self.inp_text.place(relwidth=0.5, relheight=1-self.BTN_H)
-        self.outp_label.place(relwidth=0.5, relheight=1-self.BTN_H, relx=0.5)
-        self.button.place(relwidth=1, relheight=self.BTN_H, rely=1-self.BTN_H)
+        self.outp_text.place(relwidth=0.5, relheight=1-self.BTN_H, relx=0.5)
+        self.get_button.place(relwidth=0.5, relheight=self.BTN_H, rely=1-self.BTN_H)
+        self.refine_button.place(relwidth=0.5, relheight=self.BTN_H, relx=0.5, rely=1-self.BTN_H)
 
     def show_suggestions(self):
         usr_input = self.inp_text.get("1.0", "end-1c").strip()
         if (not usr_input or usr_input == PLACEHOLDER):
             return
         print(f"request for '{usr_input}'")
-        response = self.get_response_cb(usr_input)
-        self.outp_label.config(text=response)
+        self.output(self.get_response_cb(usr_input))
+
+    def refine_suggestions(self):
+        selected_part = self.outp_text.selection_get().strip()
+        if (not selected_part):
+            print("sorry, nothing selected")
+            return
+        print(f"refine '{selected_part}'")
+        self.output(self.refine_response_cb(selected_part))
+
+    def output(self, text):
+        self.outp_text.delete("1.0", "end-1c")
+        self.outp_text.insert("1.0", text)
 
     def run(self):
         self.root.mainloop()
