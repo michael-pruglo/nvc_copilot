@@ -36,11 +36,11 @@ class MyGUI:
         self.root.bind("<Control-Return>", lambda e: self.show_suggestions())
 
         self.inp_text = tk.Text(self.root, fg=FG_COLOR, bg="#222",
-                                font=("Arial", 14, "bold"),
+                                font=("Arial", 14), padx=20, pady=10, spacing2=8, wrap=tk.WORD,
                                 insertbackground="#ddd", insertwidth=4)
         add_placeholder(self.inp_text)
         self.outp_text = tk.Text(self.root, fg=FG_COLOR, bg="#222",
-                                 font=("Arial", 14, "bold"))
+                                 font=("Arial", 14), padx=20, pady=10, spacing2=8, wrap=tk.WORD)
         self.get_button = tk.Button(self.root, command=self.show_suggestions,
                                 fg=FG_COLOR, bg="#252",
                                 font=("Arial", 19), text="make suggestions")
