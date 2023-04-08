@@ -26,8 +26,9 @@ def add_placeholder(text_widget):
 class MyGUI:
     BTN_H = 0.15
 
-    def __init__(self, on_usr_input_cb:Callable[[str],str]):
-        self.get_response = on_usr_input_cb
+    def __init__(self, get_response_cb:Callable[[str],str], refine_response_cb:Callable[[str],str]):
+        self.get_response_cb = get_response_cb
+        self.refine_response_cb = refine_response_cb
         self.create_gui()
 
     def create_gui(self):
@@ -56,7 +57,7 @@ class MyGUI:
         if (not usr_input or usr_input == PLACEHOLDER):
             return
         print(f"request for '{usr_input}'")
-        response = self.get_response(usr_input)
+        response = self.get_response_cb(usr_input)
         self.outp_label.config(text=response)
 
     def run(self):

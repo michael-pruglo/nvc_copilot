@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from view import MyGUI
-from generator import gpt_response
+from generator import get_message_suggestion
 
 if __name__ == "__main__":
-   MyGUI(gpt_response).run()
+   MyGUI(get_message_suggestion).run()
