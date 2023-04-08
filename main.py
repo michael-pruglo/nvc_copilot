@@ -4,5 +4,4 @@ from view import MyGUI
 from generator import Generator
 
 if __name__ == "__main__":
-    g = Generator()
-    MyGUI(g.get_message_suggestion, g.refine_suggestion).run()
+    MyGUI(Generator()).run()

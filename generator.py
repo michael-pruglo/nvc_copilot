@@ -1,3 +1,4 @@
+import os
 import openai
 
 openai.api_key = "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"
@@ -24,12 +25,14 @@ class Generator:
         self.chat_hist = [{"role": "system", "content": CONTEXTUAL_PROMPT}]
 
     def get_message_suggestion(self, draft_msg:str) -> str:
-        return f"dummy to '{draft_msg}'"
+        if os.getenv("DUMMY"):
+            return f"Dummy suggestion for '{draft_msg}'"
         self.reset()
         return self._ask_gpt(draft_msg)
 
-    def refine_suggestion(self, part:str) -> str:
-        return f"refined dummy to '{part}'"
+    def reword_part(self, part:str) -> str:
+        if os.getenv("DUMMY"):
+            return f"Dummy reword for '{part}'"
         return self._ask_gpt(refine_prompt(part))
 
     def _ask_gpt(self, prompt:str) -> str:
@@ -40,4 +43,11 @@ class Generator:
         )
         assistant_answer = completions.choices[0].message.content
         self.chat_hist.append({"role": "assistant", "content": assistant_answer})
-        return completions
+        print(completions, "\n\n")
+        return assistant_answer
+
+
+if __name__ == "__main__":
+    g = Generator()
+    g.get_message_suggestion(VIOLENT_EXAMPLES[0])
+    g.reword_part(input(">"))

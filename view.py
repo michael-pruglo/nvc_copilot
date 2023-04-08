@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 import tkinter.font
-from typing import Callable
 
 FG_COLOR = "#ddd"
 PLACEHOLDER = "Your draft here..."
@@ -26,9 +25,8 @@ def add_placeholder(text_widget):
 class MyGUI:
     BTN_H = 0.15
 
-    def __init__(self, get_response_cb:Callable[[str],str], refine_response_cb:Callable[[str],str]):
-        self.get_response_cb = get_response_cb
-        self.refine_response_cb = refine_response_cb
+    def __init__(self, generator):
+        self.generator = generator
         self.create_gui()
 
     def create_gui(self):
@@ -42,7 +40,7 @@ class MyGUI:
                                 insertbackground="#ddd", insertwidth=4)
         add_placeholder(self.inp_text)
         self.outp_text = tk.Text(self.root, fg=FG_COLOR, bg="#222",
-                                   font=("Arial", 14, "bold"))
+                                 font=("Arial", 14, "bold"))
         self.get_button = tk.Button(self.root, command=self.show_suggestions,
                                 fg=FG_COLOR, bg="#252",
                                 font=("Arial", 19), text="make suggestions")
@@ -59,19 +57,21 @@ class MyGUI:
         if (not usr_input or usr_input == PLACEHOLDER):
             return
         print(f"request for '{usr_input}'")
-        self.output(self.get_response_cb(usr_input))
+        response = self.generator.get_message_suggestion(usr_input)
+        self.outp_text.delete("1.0", "end-1c")
+        self.outp_text.insert("1.0", response)
 
     def refine_suggestions(self):
-        selected_part = self.outp_text.selection_get().strip()
-        if (not selected_part):
+        selection = self.outp_text.tag_ranges(tk.SEL)
+        if not selection:
             print("sorry, nothing selected")
             return
+        selected_part = self.outp_text.get(*selection).strip()
         print(f"refine '{selected_part}'")
-        self.output(self.refine_response_cb(selected_part))
+        alternative = self.generator.reword_part(selected_part)
+        self.outp_text.insert("end-1c", "\n\nalternative:\n"+alternative)
 
-    def output(self, text):
-        self.outp_text.delete("1.0", "end-1c")
-        self.outp_text.insert("1.0", text)
+    
 
     def run(self):
         self.root.mainloop()
