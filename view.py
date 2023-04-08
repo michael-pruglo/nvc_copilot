@@ -33,17 +33,19 @@ class MyGUI:
     def create_gui(self):
         self.root = tk.Tk()
         self.root.title("NVC assistant")
-        self.root.geometry("1000x480")
+        self.root.geometry("1000x600")
         self.root.bind("<Control-Return>", lambda e: self.show_suggestions())
 
         self.inp_text = tk.Text(self.root, fg=FG_COLOR, bg="#222",
                                 font=("Arial", 14, "bold"),
                                 insertbackground="#ddd", insertwidth=4)
         add_placeholder(self.inp_text)
-        self.outp_label = tk.Label(self.root, fg=FG_COLOR, bg="#222", anchor="nw")
+        self.outp_label = tk.Label(self.root, fg=FG_COLOR, bg="#222", anchor="nw",
+                                   font=("Arial", 14, "bold"),
+                                   justify="left", wraplength=450)
         self.button = tk.Button(self.root, command=self.show_suggestions,
-                          fg=FG_COLOR, bg="#252",
-                          font=("Arial", 19), text="make suggestions")
+                                fg=FG_COLOR, bg="#252",
+                                font=("Arial", 19), text="make suggestions")
 
         self.inp_text.place(relwidth=0.5, relheight=1-self.BTN_H)
         self.outp_label.place(relwidth=0.5, relheight=1-self.BTN_H, relx=0.5)
@@ -53,7 +55,7 @@ class MyGUI:
         usr_input = self.inp_text.get("1.0", "end-1c").strip()
         if (not usr_input or usr_input == PLACEHOLDER):
             return
-        print("callback to ", usr_input)
+        print(f"request for '{usr_input}'")
         response = self.get_response(usr_input)
         self.outp_label.config(text=response)
 

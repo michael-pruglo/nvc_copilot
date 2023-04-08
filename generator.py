@@ -13,7 +13,7 @@ VIOLENT_EXAMPLES = [
 ]
 
 def gpt_response(prompt:str) -> str:
-    return f"dummy to '{prompt}'"
+    # return f"dummy to '{prompt}'"
     chat_hist = [{"role": "system", "content": CONTEXTUAL_PROMPT}]
     chat_hist.append({"role": "user", "content": prompt})
     completions = openai.ChatCompletion.create(
