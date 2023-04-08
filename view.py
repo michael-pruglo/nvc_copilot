@@ -50,7 +50,7 @@ class MyGUI:
         self.button.place(relwidth=1, relheight=self.BTN_H, rely=1-self.BTN_H)
 
     def show_suggestions(self):
-        usr_input = self.inp_text.get("1.0", "end-1c")
+        usr_input = self.inp_text.get("1.0", "end-1c").strip()
         if (not usr_input or usr_input == PLACEHOLDER):
             return
         print("callback to ", usr_input)
