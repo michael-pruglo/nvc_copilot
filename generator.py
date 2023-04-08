@@ -11,6 +11,10 @@ offer edits to make the messages conform to non-violent communication style.
 
 VIOLENT_EXAMPLES = [
     "You disappointed me by not coming over last week - I had to rewatch the same movie again",
+    "You irritate me when you leave company documents on the conference room floor. Our company needs to project professional atmosphere, so don't do that again.",
+    "John was angry with me yesterday for no reason. It made the whole evening dull.",
+    "You are such a selfish person for not considering my feelings. You always do whatever you want without any regard for others.",
+    "I can't believe you would say something like that. You're so insensitive and rude. How could you be so thoughtless?",
 ]
 
 def prompt_refine(part): return f"Reword the part of the message '{part}' please"
