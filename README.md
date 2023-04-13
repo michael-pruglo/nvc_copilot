@@ -9,3 +9,5 @@ You can refine the output message:
 
 - click "less words" to make it more concise
 - select a part of the output and click "refine selection" to reword it
+
+don't forget to mention the file with your api key
